@@ -39,7 +39,11 @@ export default class Timeline extends Component {
     }
 
     subscribeToEvents = () => {
-        const io = socket('http://localhost:3001/')
+        const io = socket('http://10.0.3.2:3000', {transports: ['websocket']})
+
+        io.on('connect', () => {
+            console.log('connected')
+        })
    
         io.on('tweet', data => {
             this.setState({
@@ -62,7 +66,7 @@ export default class Timeline extends Component {
                 <FlatList 
                     data={this.state.tweets}
                     keyExtractor={tweet => tweet._id}
-                    renderItem={({ item }) => <Tweet tweet={item} />}
+                    renderItem={ ({ item }) => <Tweet tweet={item} />}
                 />
             </View>
         )
